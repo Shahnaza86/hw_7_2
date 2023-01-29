@@ -1,10 +1,14 @@
 package com.example.hw_7_2;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,15 +17,29 @@ public class MainActivity extends AppCompatActivity {
     private Boolean isOperationClick;
     private String operation;
     private Integer result;
+    private MaterialButton button_turn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text_view);
+
+        button_turn = findViewById(R.id.button_turn);
+        button_turn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+                String text = textView.getText().toString();
+                intent.putExtra("result",text);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void onNumberClick(View view) {
+        button_turn.setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.btn_one:
                 if (textView.getText().toString().equals("0") || isOperationClick) {
@@ -87,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onOperationClick(View view) {
+        button_turn.setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.btn_plus:
                 first = Integer.valueOf(textView.getText().toString());
@@ -110,19 +129,27 @@ public class MainActivity extends AppCompatActivity {
                     case "+":
                         result = first + second;
                         textView.setText(result.toString());
+                        button_turn.setVisibility(View.VISIBLE);
                         break;
                     case "-":
                         result = first - second;
                         textView.setText(result.toString());
+                        button_turn.setVisibility(View.VISIBLE);
                         break;
                     case "*":
                         result = first * second;
                         textView.setText(result.toString());
+                        button_turn.setVisibility(View.VISIBLE);
                         break;
                     case "/":
                         result = first / second;
                         textView.setText(result.toString());
+                        button_turn.setVisibility(View.VISIBLE);
+
                         break;
+
+
+
                 }
 
 
